@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class PredictedPice extends StatefulWidget {
   final Function(int) changeScreen;
-  final Function makePrediction;
+  final Future<double> Function() makePrediction; // Change the return type
 
   const PredictedPice({
     super.key,
@@ -16,9 +16,9 @@ class PredictedPice extends StatefulWidget {
 }
 
 class _PredictedPiceState extends State<PredictedPice> {
-  var predictedprice = 0.0;
+  double? predictedprice;
 
-  void _predictedprice() {
+  void _goHome() {
     widget.changeScreen(0);
   }
 
@@ -26,7 +26,14 @@ class _PredictedPiceState extends State<PredictedPice> {
   void initState() {
     super.initState();
     // Call the makePrediction function when the screen is initialized
-    widget.makePrediction();
+    widget.makePrediction().then((value) {
+      setState(() {
+        predictedprice = value;
+      });
+    }).catchError((error) {
+      // Handle error if prediction fails
+      print('Prediction failed: $error');
+    });
   }
 
   @override
@@ -80,7 +87,23 @@ class _PredictedPiceState extends State<PredictedPice> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Text(
-                  'Predicted Price: $predictedprice',
+                  'Predicted house Price:',
+                  style: GoogleFonts.poppins(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: const Color.fromARGB(255, 70, 69, 69),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 6.0),
+
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: Text(
+                  'USD: ${predictedprice?.toStringAsFixed(2)} dollars',
                   style: GoogleFonts.poppins(
                     fontSize: 16.0,
                     fontWeight: FontWeight.normal,
@@ -90,39 +113,7 @@ class _PredictedPiceState extends State<PredictedPice> {
               ),
             ),
             const SizedBox(height: 20.0),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
-              child: TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
-                  labelText: 'Enter age of the house in years eg 5 years',
-                  hintText: 'Enter age of the house in years eg 5 years',
-                  prefixIcon: const Icon(Icons.traffic),
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 10.0,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      color: Color.fromARGB(181, 0, 0, 0),
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      color: Color.fromARGB(181, 0, 0, 0),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -137,9 +128,9 @@ class _PredictedPiceState extends State<PredictedPice> {
                   ),
                 ),
                 onPressed: () {
-                  _predictedprice();
+                  _goHome();
                 },
-                child: const Text('Predict Price'),
+                child: const Text('Go home'),
               ),
             ),
           ],

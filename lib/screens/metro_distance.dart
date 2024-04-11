@@ -58,7 +58,7 @@ class _MetroDistanceState extends State<MetroDistance> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50.0),
                   child: Image.asset(
-                    'images/homepage.jpg',
+                    'images/metro.jpg',
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: MediaQuery.of(context).size.height * 0.4,
                     fit: BoxFit.cover,

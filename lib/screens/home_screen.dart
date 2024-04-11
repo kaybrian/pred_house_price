@@ -13,7 +13,6 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
@@ -64,19 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void makePrediction() async {
+  Future<double> makePrediction() async {
     debugPrint(
-      bedRooms.toString() +
-          " " +
-          netSquare.toString() +
-          " " +
-          centerDistance.toString() +
-          " " +
-          metroDistance.toString() +
-          " " +
-          floor.toString() +
-          " " +
-          age.toString(),
+      "$bedRooms $netSquare $centerDistance $metroDistance $floor $age",
     );
 
     try {
@@ -91,14 +80,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (response != null) {
         // Handle the response here
-        print('Predicted price: $response');
+        return response.toDouble(); // Convert response to double and return
       } else {
         // Handle error case where response is null
         print('Prediction failed');
+        throw 'Prediction failed'; // Throw an error
       }
     } catch (e) {
       // Handle error case
       print('Error: $e');
+      throw e; // Throw the error
     }
   }
 

@@ -59,7 +59,7 @@ class _AgeScreenState extends State<AgeScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50.0),
                   child: Image.asset(
-                    'images/homepage.jpg',
+                    'images/age.jpeg',
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: MediaQuery.of(context).size.height * 0.4,
                     fit: BoxFit.cover,
